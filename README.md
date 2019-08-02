@@ -42,6 +42,23 @@ sh update_modules.sh
     &*/:`<>?\|"
     ```
 - Images must be `.png` format
-- Images should be no wider than 512px
+- Image resolution guidelines:
+  - Images with native width larger than 512px should be scaled down to 512px wide
+  - Images with native width of 512px or less should be added as-is
 - Substitute promotional flyers are acceptable when no boxart is available for a game
 - Use [libretro-thumbnails-check](https://github.com/RobLoach/libretro-thumbnails-check) to check for missing thumbnails
+
+## Testing
+
+To check for files with invalid file names, use the following command....
+
+``` bash
+find . -name '*[&\*:`áàãăâéèêíìĩóòõôơúùũưýỳđ<>?\\|"*]*'
+```
+
+This can be put in a `.travis.yml` file to enable automated testing.
+``` yaml
+language: bash
+script:
+    - find Named* -name '*[&\*:`áàãăâéèêíìĩóòõôơúùũưýỳđ<>?\\|"*]*' | grep "." && echo "The above are invalid filenames" && return 1 || echo "No invalid files found"
+```
